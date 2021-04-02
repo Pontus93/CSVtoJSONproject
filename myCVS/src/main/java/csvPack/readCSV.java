@@ -13,10 +13,9 @@ public class readCSV {
 	public static ArrayList<ArrayList<String>> getWholeSheet() {
 		if (wholeSheet.isEmpty()) {
 			loadCSV();
-			
+
 			// Remove first row in the sheet.
-				wholeSheet.remove(0);
-			
+			wholeSheet.remove(0);
 		}
 		return wholeSheet;
 	}

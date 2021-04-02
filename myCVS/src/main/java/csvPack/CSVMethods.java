@@ -1,12 +1,16 @@
 package csvPack;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class CSVMethods {
 
-	// Task 1. Collecting all data and provide JSON format
+	// Task 1. Collecting all data and provide JSON format.
 	static String GetDataCsv() {
 
 		ArrayList<String> order = new ArrayList<String>();
@@ -41,28 +45,42 @@ public class CSVMethods {
 		return jsonCSV;
 	}
 
-	// Task 2. collect data from a specific column, (This case is Regions).
-	static ArrayList<String> Column() {
+	// Task 2. Collect data from a specific column.
+	static ArrayList<String> Column(String id) {
+		int i = Integer.parseInt(id);
 		ArrayList<String> showColumn = new ArrayList<String>();
 		for (ArrayList<String> row : readCSV.getWholeSheet()) {
-			showColumn.add(row.get(2));
+
+			showColumn.add(row.get(i));
 		}
-		showColumn.remove(0);
-		showColumn.sort(null);
+		if (i == 0) {
+			showColumn.sort(Comparator.comparing(Double::parseDouble));
+		} else if (i > 5) {
+			showColumn.sort(Comparator.comparing(Double::parseDouble));
+		} else if (i == 1) {
+			ArrayList<String> datestring = new ArrayList<String>();
+			datestring.add(showColumn.get(1));
+
+			Collections.sort(datestring, new Comparator<String>() {
+				DateFormat DateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
+				@Override
+				public int compare(String line1, String line2) {
+					try {
+						return DateFormat.parse(line1).compareTo(DateFormat.parse(line2));
+					} catch (ParseException e) {
+						throw new IllegalArgumentException(e);
+					}
+				}
+			});
+		}
+
+		else {
+			showColumn.sort(null);
+		}
 		return showColumn;
 	}
-	
-	// Task 2.1 collect data from a specific column, (This case is unitPrice).
-	static ArrayList<String> ColumnNumber() {
-		ArrayList<String> showColumn = new ArrayList<String>();
-		for (ArrayList<String> row : readCSV.getWholeSheet()) {
-			showColumn.add(row.get(7));
-		}
-		showColumn.remove(0);
-		showColumn.sort(Comparator.comparing(Double::parseDouble));
-		return showColumn;
-	}
-	
+
 	// Task 3. Controls the math so the calculations are accurate.
 	static ArrayList<String> MathControl() {
 		ArrayList<String> ControlCheck = new ArrayList<String>();
@@ -85,7 +103,8 @@ public class CSVMethods {
 
 				if (result.compareTo(totalPrice) == 0) {
 				} else {
-					ControlCheck.add("something wrong on line: " + row.get(0));
+					ControlCheck.add(
+							"Units: " + row.get(6) + " " + "UnitCost: " + row.get(7) + " " + "Total: " + row.get(8));
 				}
 			}
 		}
