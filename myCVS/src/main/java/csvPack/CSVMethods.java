@@ -89,13 +89,6 @@ public class CSVMethods {
 			String unitPrice = (row.get(7));
 			String total = (row.get(8));
 
-			if (unit.equals("Units")) {
-			}
-			if (unitPrice.equals("UnitCost")) {
-			}
-			if (total.equals("Total")) {
-			} else {
-
 				BigDecimal units = new BigDecimal(unit);
 				BigDecimal unitcost = new BigDecimal(unitPrice);
 				BigDecimal totalPrice = new BigDecimal(total);
@@ -105,8 +98,7 @@ public class CSVMethods {
 				} else {
 					ControlCheck.add(
 							"Units: " + row.get(6) + " " + "UnitCost: " + row.get(7) + " " + "Total: " + row.get(8));
-				}
-			}
+				}	
 		}
 		return ControlCheck;
 	}
